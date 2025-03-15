@@ -5,8 +5,23 @@
 @layer base {
   input[type="text"],
   input[type="email"],
-  input[type="tel"] {
-    @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
+  input[type="tel"],
+  input[type="date"] {
+    @apply mt-1 block rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500;
+  }
+}
+
+/* Datepicker Styles */
+input[type="date"] {
+  min-width: 150px;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  input[type="date"] {
+    min-width: 120px;
+    font-size: 0.9rem;
   }
 }
 

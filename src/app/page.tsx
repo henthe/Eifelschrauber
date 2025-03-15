@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -19,6 +19,7 @@ export default function Home() {
   const [selectedSlot, setSelectedSlot] = useState<{start: Date, end: Date} | null>(null)
   const [bookings, setBookings] = useState<Booking[]>([])
   const [showCustomTimeModal, setShowCustomTimeModal] = useState(false)
+  const calendarRef = useRef<any>(null)
 
   useEffect(() => {
     fetchBookings()
@@ -97,23 +98,42 @@ export default function Home() {
     })
   }
 
+  const handleWeekSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const date = new Date(event.target.value);
+    calendarRef.current?.getApi().gotoDate(date);
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <section className="mb-8 text-center">
         <h2 className="text-2xl font-bold mb-4">Hebebühne Vermietung</h2>
         <p className="text-lg mb-2">Preis: 50€ pro Stunde</p>
         <p className="text-gray-600 mb-4">Verfügbar von 08:00 bis 20:00 Uhr</p>
-        <button
-          onClick={() => setShowCustomTimeModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:bg-blue-800"
-        >
-          Zeitslot manuell auswählen
-        </button>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <button
+            onClick={() => setShowCustomTimeModal(true)}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:bg-blue-800"
+          >
+            Zeitslot manuell auswählen
+          </button>
+          <div className="flex items-center gap-2">
+            <label htmlFor="weekPicker" className="text-sm font-medium text-gray-700">
+              Woche auswählen:
+            </label>
+            <input
+              type="date"
+              id="weekPicker"
+              onChange={handleWeekSelect}
+              className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            />
+          </div>
+        </div>
       </section>
 
       <div className="relative">
         <div className="calendar-container touch-manipulation">
           <FullCalendar
+            ref={calendarRef}
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView="timeGridWeek"
             selectable={true}
