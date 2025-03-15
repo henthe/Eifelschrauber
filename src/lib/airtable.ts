@@ -1,6 +1,14 @@
 import Airtable from 'airtable';
 
-const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID || '');
+// Konfiguriere Airtable mit expliziten Optionen
+const airtableConfig = {
+  apiKey: process.env.AIRTABLE_API_KEY,
+  endpointUrl: 'https://api.airtable.com',
+  apiVersion: '0.1.0',
+  noRetryIfRateLimited: false
+};
+
+const base = new Airtable(airtableConfig).base(process.env.AIRTABLE_BASE_ID || '');
 const table = base(process.env.AIRTABLE_TABLE_NAME || 'Bookings');
 
 // Debug-Logging
@@ -44,14 +52,31 @@ export async function createBooking(booking: Omit<Booking, 'id'>) {
 
 export async function getBookings() {
   try {
-    const records = await table
-      .select({
-        filterByFormula: 'AND(startTime >= TODAY())',
-        sort: [{ field: 'startTime', direction: 'asc' }],
-      })
-      .all();
+    const records = await new Promise<any[]>((resolve, reject) => {
+      const allRecords: any[] = [];
+      
+      table
+        .select({
+          filterByFormula: 'AND(startTime >= TODAY())',
+          sort: [{ field: 'startTime', direction: 'asc' }],
+        })
+        .eachPage(
+          function page(records, fetchNextPage) {
+            allRecords.push(...records);
+            fetchNextPage();
+          },
+          function done(err) {
+            if (err) {
+              console.error('Fehler beim Laden der Seiten:', err);
+              reject(err);
+              return;
+            }
+            resolve(allRecords);
+          }
+        );
+    });
 
-    return records.map((record) => ({
+    return records.map((record: any) => ({
       id: record.id,
       startTime: record.get('startTime') as string,
       endTime: record.get('endTime') as string,
