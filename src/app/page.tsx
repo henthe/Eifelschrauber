@@ -294,6 +294,7 @@ export default function Home() {
               <div className="relative">
                 <input
                   type="date"
+                  id="weekPicker"
                   onChange={(e) => {
                     if (e.target.value) {
                       handleWeekSelect(new Date(e.target.value));
@@ -301,6 +302,17 @@ export default function Home() {
                   }}
                   className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
+                <button
+                  onClick={() => {
+                    const picker = document.getElementById('weekPicker') as HTMLInputElement;
+                    if (picker) {
+                      picker.showPicker();
+                    }
+                  }}
+                  className="absolute inset-0 w-full h-full opacity-0"
+                  aria-label="Datum auswählen"
+                >
+                </button>
               </div>
             </div>
           </div>
