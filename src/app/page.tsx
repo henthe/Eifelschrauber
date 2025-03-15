@@ -112,7 +112,7 @@ export default function Home() {
       </section>
 
       <div className="relative">
-        <div className="calendar-container">
+        <div className="calendar-container touch-manipulation">
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView="timeGridWeek"
@@ -158,9 +158,32 @@ export default function Home() {
               minute: '2-digit',
               hour12: false
             }}
-            longPressDelay={100}
-            selectLongPressDelay={100}
-            eventLongPressDelay={100}
+            longPressDelay={50}
+            selectLongPressDelay={50}
+            eventLongPressDelay={50}
+            selectMinDistance={5}
+            unselectAuto={false}
+            businessHours={{
+              startTime: '08:00',
+              endTime: '20:00',
+              daysOfWeek: [0, 1, 2, 3, 4, 5, 6]
+            }}
+            editable={false}
+            droppable={false}
+            slotEventOverlap={false}
+            views={{
+              timeGridWeek: {
+                titleFormat: { year: 'numeric', month: 'short', day: 'numeric' },
+                dayHeaderFormat: { weekday: 'short', day: 'numeric' },
+                slotDuration: '01:00:00',
+                slotLabelInterval: '01:00',
+              },
+              timeGridDay: {
+                titleFormat: { year: 'numeric', month: 'long', day: 'numeric' },
+                slotDuration: '01:00:00',
+                slotLabelInterval: '01:00',
+              }
+            }}
           />
         </div>
 

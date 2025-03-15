@@ -15,6 +15,73 @@
   position: relative;
   z-index: 1;
   margin-bottom: 2rem;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* Mobile Optimierungen */
+@media (max-width: 768px) {
+  .fc .fc-toolbar {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.1em;
+    margin: 0;
+  }
+
+  .fc .fc-button {
+    padding: 0.4em 0.65em;
+    font-size: 0.9em;
+  }
+
+  .fc .fc-view-harness {
+    min-height: 400px;
+  }
+
+  .fc-timegrid-slot {
+    height: 3rem !important;
+  }
+
+  .fc-timegrid-slot-label {
+    font-size: 0.8em;
+  }
+
+  .fc-event {
+    padding: 2px;
+  }
+
+  /* Verbesserte Touch-Interaktion */
+  .fc-timegrid-col-events {
+    touch-action: none;
+  }
+
+  .fc-event-main {
+    pointer-events: auto !important;
+  }
+
+  .fc td {
+    touch-action: manipulation;
+  }
+
+  .fc-scroller {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .fc-timegrid-event {
+    min-height: 2rem;
+  }
+
+  /* Größere Klickbereiche */
+  .fc .fc-timegrid-slot {
+    min-height: 3rem;
+  }
+
+  .fc .fc-timegrid-col-frame {
+    min-height: 3rem;
+  }
 }
 
 .fc-event {
@@ -61,4 +128,17 @@
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
+  margin: 1rem;
+}
+
+/* Mobile Modal Optimierungen */
+@media (max-width: 768px) {
+  .modal-content {
+    max-width: 100%;
+    margin: 0.5rem;
+  }
+
+  .modal-overlay {
+    padding: 0.5rem;
+  }
 } 
