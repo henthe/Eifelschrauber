@@ -14,6 +14,7 @@ interface Booking {
   endTime: string
 }
 
+// Trigger redeploy
 export default function Home() {
   const [selectedSlot, setSelectedSlot] = useState<{start: Date, end: Date} | null>(null)
   const [bookings, setBookings] = useState<Booking[]>([])
