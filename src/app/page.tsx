@@ -291,11 +291,23 @@ export default function Home() {
                   </svg>
                 </button>
               </div>
-              <input
-                type="date"
-                onChange={(e) => handleWeekSelect(new Date(e.target.value))}
-                className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
+              <div className="relative">
+                <input
+                  type="date"
+                  onChange={(e) => handleWeekSelect(new Date(e.target.value))}
+                  onFocus={(e) => e.target.click()}
+                  onClick={(e) => e.preventDefault()}
+                  className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <div 
+                  className="absolute inset-0"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const input = e.currentTarget.previousSibling as HTMLInputElement;
+                    input.showPicker();
+                  }}
+                ></div>
+              </div>
             </div>
           </div>
         )}
