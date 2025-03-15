@@ -21,15 +21,27 @@ export default function Home() {
   const [showCustomTimeModal, setShowCustomTimeModal] = useState(false)
   const [showDatePicker, setShowDatePicker] = useState(false)
   const calendarRef = useRef<any>(null)
-  const [initialView, setInitialView] = useState('timeGridWeek')
+  const [initialView, setInitialView] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek'
+    }
+    return 'timeGridWeek'
+  })
 
   useEffect(() => {
     fetchBookings()
-    // Setze initiale Ansicht basierend auf Bildschirmgröße
+    
     const handleResize = () => {
-      setInitialView(window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek')
+      const newView = window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek'
+      setInitialView(newView)
+      if (calendarRef.current) {
+        const api = calendarRef.current.getApi()
+        if (api.view.type !== newView) {
+          api.changeView(newView)
+        }
+      }
     }
-    handleResize() // Initial ausführen
+
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
