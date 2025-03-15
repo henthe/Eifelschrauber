@@ -38,7 +38,9 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
+    console.log('GET /api/bookings aufgerufen')
     const bookings = await getBookings()
+    console.log('Buchungen erfolgreich geladen:', bookings)
     return NextResponse.json(bookings)
   } catch (error: any) {
     console.error('Fehler beim Abrufen der Buchungen:', error)

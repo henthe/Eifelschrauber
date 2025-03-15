@@ -28,6 +28,7 @@ export default function Home() {
     try {
       const response = await fetch('/api/bookings')
       const data = await response.json()
+      console.log('Buchungen geladen:', data)
       setBookings(Array.isArray(data) ? data : [])
     } catch (error) {
       console.error('Fehler beim Laden der Buchungen:', error)

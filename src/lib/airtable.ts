@@ -3,6 +3,13 @@ import Airtable from 'airtable';
 const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE_ID || '');
 const table = base(process.env.AIRTABLE_TABLE_NAME || 'Bookings');
 
+// Debug-Logging
+console.log('Airtable Konfiguration:', {
+  baseId: process.env.AIRTABLE_BASE_ID,
+  tableName: process.env.AIRTABLE_TABLE_NAME,
+  hasApiKey: !!process.env.AIRTABLE_API_KEY
+});
+
 export interface Booking {
   id: string;
   startTime: string;
