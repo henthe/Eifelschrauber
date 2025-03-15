@@ -98,14 +98,14 @@ export default function Home() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto px-4 py-8">
       <section className="mb-8 text-center">
         <h2 className="text-2xl font-bold mb-4">Hebebühne Vermietung</h2>
         <p className="text-lg mb-2">Preis: 50€ pro Stunde</p>
-        <p className="text-gray-600">Verfügbar von 08:00 bis 20:00 Uhr</p>
+        <p className="text-gray-600 mb-4">Verfügbar von 08:00 bis 20:00 Uhr</p>
         <button
           onClick={() => setShowCustomTimeModal(true)}
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:bg-blue-800"
         >
           Zeitslot manuell auswählen
         </button>
@@ -148,20 +148,37 @@ export default function Home() {
               right: 'timeGridWeek,timeGridDay'
             }}
             locale="de"
+            stickyHeaderDates={true}
+            expandRows={true}
+            contentHeight="auto"
+            handleWindowResize={true}
+            eventDisplay="block"
+            slotLabelFormat={{
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false
+            }}
+            longPressDelay={100}
+            selectLongPressDelay={100}
+            eventLongPressDelay={100}
           />
         </div>
 
         {selectedSlot && (
-          <div className="modal-overlay">
+          <div className="modal-overlay" onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setSelectedSlot(null);
+            }
+          }}>
             <div className="modal-content">
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 <BookingForm
                   startTime={selectedSlot.start}
                   endTime={selectedSlot.end}
                   onCancel={() => setSelectedSlot(null)}
                   onBookingComplete={() => {
-                    setSelectedSlot(null)
-                    fetchBookings()
+                    setSelectedSlot(null);
+                    fetchBookings();
                   }}
                 />
               </div>
@@ -170,13 +187,19 @@ export default function Home() {
         )}
 
         {showCustomTimeModal && (
-          <CustomTimeSlotModal
-            onClose={() => setShowCustomTimeModal(false)}
-            onSelect={(start, end) => {
-              setShowCustomTimeModal(false)
-              handleCustomTimeSelect(start, end)
-            }}
-          />
+          <div className="modal-overlay" onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowCustomTimeModal(false);
+            }
+          }}>
+            <CustomTimeSlotModal
+              onClose={() => setShowCustomTimeModal(false)}
+              onSelect={(start, end) => {
+                setShowCustomTimeModal(false);
+                handleCustomTimeSelect(start, end);
+              }}
+            />
+          </div>
         )}
       </div>
     </div>
