@@ -133,6 +133,15 @@ export default function Home() {
             }}
             selectOverlap={false}
             select={handleDateSelect}
+            dateClick={(info) => {
+              const clickedDate = new Date(info.date);
+              const endDate = new Date(clickedDate);
+              endDate.setHours(clickedDate.getHours() + 1);
+              handleDateSelect({
+                start: clickedDate,
+                end: endDate
+              });
+            }}
             events={bookings.map(booking => ({
               title: 'Gebucht',
               start: booking.startTime,

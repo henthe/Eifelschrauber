@@ -77,10 +77,20 @@
   /* Größere Klickbereiche */
   .fc .fc-timegrid-slot {
     min-height: 3rem;
+    cursor: pointer;
   }
 
   .fc .fc-timegrid-col-frame {
     min-height: 3rem;
+  }
+
+  /* Aktive Zustände für besseres Feedback */
+  .fc .fc-timegrid-slot:active {
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+
+  .fc td.fc-timegrid-slot {
+    transition: background-color 0.15s ease;
   }
 }
 
