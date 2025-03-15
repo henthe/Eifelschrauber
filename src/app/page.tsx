@@ -292,27 +292,47 @@ export default function Home() {
                 </button>
               </div>
               <div className="relative">
-                <input
-                  type="date"
-                  id="weekPicker"
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      handleWeekSelect(new Date(e.target.value));
-                    }
-                  }}
-                  className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-                <button
-                  onClick={() => {
-                    const picker = document.getElementById('weekPicker') as HTMLInputElement;
-                    if (picker) {
-                      picker.showPicker();
-                    }
-                  }}
-                  className="absolute inset-0 w-full h-full opacity-0"
-                  aria-label="Datum auswählen"
-                >
-                </button>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => {
+                      const today = new Date();
+                      handleWeekSelect(today);
+                    }}
+                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    Heute
+                  </button>
+                  <button
+                    onClick={() => {
+                      const nextWeek = new Date();
+                      nextWeek.setDate(nextWeek.getDate() + 7);
+                      handleWeekSelect(nextWeek);
+                    }}
+                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    Nächste Woche
+                  </button>
+                  <button
+                    onClick={() => {
+                      const nextTwoWeeks = new Date();
+                      nextTwoWeeks.setDate(nextTwoWeeks.getDate() + 14);
+                      handleWeekSelect(nextTwoWeeks);
+                    }}
+                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    In 2 Wochen
+                  </button>
+                  <button
+                    onClick={() => {
+                      const nextMonth = new Date();
+                      nextMonth.setDate(nextMonth.getDate() + 30);
+                      handleWeekSelect(nextMonth);
+                    }}
+                    className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    In 1 Monat
+                  </button>
+                </div>
               </div>
             </div>
           </div>
