@@ -19,10 +19,19 @@ export default function Home() {
   const [selectedSlot, setSelectedSlot] = useState<{start: Date, end: Date} | null>(null)
   const [bookings, setBookings] = useState<Booking[]>([])
   const [showCustomTimeModal, setShowCustomTimeModal] = useState(false)
+  const [showDatePicker, setShowDatePicker] = useState(false)
   const calendarRef = useRef<any>(null)
+  const [initialView, setInitialView] = useState('timeGridWeek')
 
   useEffect(() => {
     fetchBookings()
+    // Setze initiale Ansicht basierend auf Bildschirmgröße
+    const handleResize = () => {
+      setInitialView(window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek')
+    }
+    handleResize() // Initial ausführen
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   const fetchBookings = async () => {
@@ -98,9 +107,9 @@ export default function Home() {
     })
   }
 
-  const handleWeekSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const date = new Date(event.target.value);
+  const handleWeekSelect = (date: Date) => {
     calendarRef.current?.getApi().gotoDate(date);
+    setShowDatePicker(false);
   };
 
   return (
@@ -116,17 +125,15 @@ export default function Home() {
           >
             Zeitslot manuell auswählen
           </button>
-          <div className="flex items-center gap-2">
-            <label htmlFor="weekPicker" className="text-sm font-medium text-gray-700">
-              Woche auswählen:
-            </label>
-            <input
-              type="date"
-              id="weekPicker"
-              onChange={handleWeekSelect}
-              className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
+          <button
+            onClick={() => setShowDatePicker(true)}
+            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:bg-gray-300 flex items-center gap-2"
+          >
+            <span>Andere Woche anzeigen</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+            </svg>
+          </button>
         </div>
       </section>
 
@@ -135,7 +142,7 @@ export default function Home() {
           <FullCalendar
             ref={calendarRef}
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-            initialView="timeGridWeek"
+            initialView={initialView}
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
@@ -251,6 +258,33 @@ export default function Home() {
                 handleCustomTimeSelect(start, end);
               }}
             />
+          </div>
+        )}
+
+        {showDatePicker && (
+          <div className="modal-overlay" onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowDatePicker(false);
+            }
+          }}>
+            <div className="modal-content p-4" style={{ maxWidth: '300px' }}>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">Woche auswählen</h3>
+                <button
+                  onClick={() => setShowDatePicker(false)}
+                  className="text-gray-400 hover:text-gray-500"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <input
+                type="date"
+                onChange={(e) => handleWeekSelect(new Date(e.target.value))}
+                className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
           </div>
         )}
       </div>
