@@ -130,6 +130,16 @@ export default function Home() {
         <h2 className="text-2xl font-bold mb-4">Hebebühne Vermietung</h2>
         <p className="text-lg mb-2">Preis: 18€ pro Stunde</p>
         <p className="text-gray-600 mb-4">Verfügbar von 08:00 bis 20:00 Uhr</p>
+        <p className="text-gray-600 mb-4">
+          <a 
+            href="https://maps.app.goo.gl/qjGD7G5Udd5nTYf86" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="hover:text-blue-600 hover:underline"
+          >
+            Tuchwiese 7a, 54570 Wallenborn
+          </a>
+        </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
             onClick={() => setShowCustomTimeModal(true)}
