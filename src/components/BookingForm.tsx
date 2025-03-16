@@ -23,7 +23,7 @@ export default function BookingForm({ startTime, endTime, onCancel, onBookingCom
   const [paypalLoading, setPaypalLoading] = useState(true)
   
   const hours = Math.ceil((endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60))
-  const totalPrice = hours * 50 // 50€ pro Stunde
+  const totalPrice = hours * 18 // 18€ pro Stunde
 
   // Beobachte die Formularfelder
   const watchedFields = watch(['name', 'email', 'phone'])
@@ -165,7 +165,7 @@ export default function BookingForm({ startTime, endTime, onCancel, onBookingCom
                         description: `${startTime.toLocaleString('de-DE')} bis ${endTime.toLocaleString('de-DE')}`,
                         unit_amount: {
                           currency_code: "EUR",
-                          value: "50.00"
+                          value: "18.00"
                         },
                         quantity: hours.toString()
                       }]
