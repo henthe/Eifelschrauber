@@ -339,7 +339,7 @@ export default function AdminPage() {
             overlap: false
           }))}
           headerToolbar={{
-            left: 'prev,next heute',
+            left: 'prev,next Heute',
             center: 'title',
             right: 'timeGridWeek,timeGridDay'
           }}
