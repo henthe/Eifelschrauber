@@ -125,32 +125,34 @@ export default function Home() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <section className="mb-8 text-center">
-        <h2 className="text-2xl font-bold mb-4">Hebebühne Vermietung</h2>
-        <p className="text-lg mb-2">Preis: 18€ pro Stunde</p>
-        <p className="text-gray-600 mb-4">Verfügbar von 06:00 bis 22:00 Uhr (Montag bis Samstag)</p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <button
-            onClick={() => setShowCustomTimeModal(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:bg-blue-800"
-          >
-            Zeitslot manuell auswählen
-          </button>
-          <button
-            onClick={() => setShowDatePicker(true)}
-            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:bg-gray-300 flex items-center gap-2"
-          >
-            <span>Andere Woche anzeigen</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-            </svg>
-          </button>
-        </div>
-      </section>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-50 py-8 px-4">
+      <div className="max-w-6xl mx-auto">
+        <section className="card mb-8">
+          <div className="text-center space-y-4">
+            <h2 className="text-3xl font-bold text-gray-900">Hebebühne Vermietung</h2>
+            <p className="text-xl font-medium text-gray-700">Preis: 18€ pro Stunde</p>
+            <p className="text-gray-600">Verfügbar von 06:00 bis 22:00 Uhr (Montag bis Samstag)</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+              <button
+                onClick={() => setShowCustomTimeModal(true)}
+                className="btn btn-primary w-full sm:w-auto"
+              >
+                Zeitslot manuell auswählen
+              </button>
+              <button
+                onClick={() => setShowDatePicker(true)}
+                className="btn btn-outline w-full sm:w-auto flex items-center justify-center gap-2"
+              >
+                <span>Andere Woche anzeigen</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </section>
 
-      <div className="relative">
-        <div className="calendar-container touch-manipulation">
+        <div className="calendar-container">
           <FullCalendar
             ref={calendarRef}
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -242,23 +244,21 @@ export default function Home() {
         </div>
 
         {selectedSlot && (
-          <div className="modal-overlay" onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              setSelectedSlot(null);
-            }
-          }}>
+          <div className="modal-overlay">
             <div className="modal-content">
-              <div className="p-4 sm:p-6">
-                <BookingForm
-                  startTime={selectedSlot.start}
-                  endTime={selectedSlot.end}
-                  onCancel={() => setSelectedSlot(null)}
-                  onBookingComplete={() => {
-                    setSelectedSlot(null);
-                    fetchBookings();
-                  }}
-                />
-              </div>
+              <h2 className="card-title mb-4">Zeitslot buchen</h2>
+              <p className="text-gray-600 mb-6">
+                Zeit: {selectedSlot.start.toLocaleString()} - {selectedSlot.end.toLocaleString()}
+              </p>
+              <BookingForm
+                startTime={selectedSlot.start}
+                endTime={selectedSlot.end}
+                onCancel={() => setSelectedSlot(null)}
+                onBookingComplete={() => {
+                  setSelectedSlot(null);
+                  fetchBookings();
+                }}
+              />
             </div>
           </div>
         )}

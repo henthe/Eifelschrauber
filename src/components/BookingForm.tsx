@@ -59,35 +59,36 @@ export default function BookingForm({ startTime, endTime, onCancel, onBookingCom
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold">Buchung bestätigen</h3>
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="card-title">Buchung bestätigen</h3>
         <button
           onClick={onCancel}
-          className="text-gray-500 hover:text-gray-700"
+          className="text-gray-400 hover:text-gray-500 transition-colors"
         >
+          <span className="sr-only">Schließen</span>
           ✕
         </button>
       </div>
       
-      <div className="mb-4">
-        <p>Start: {startTime.toLocaleString('de-DE')}</p>
-        <p>Ende: {endTime.toLocaleString('de-DE')}</p>
-        <p className="font-bold mt-2">Gesamtpreis: {totalPrice}€</p>
+      <div className="space-y-3 mb-6">
+        <p><strong className="font-medium">Start:</strong> {startTime.toLocaleString('de-DE')}</p>
+        <p><strong className="font-medium">Ende:</strong> {endTime.toLocaleString('de-DE')}</p>
+        <p className="text-lg font-semibold text-blue-600 mt-4">Gesamtpreis: {totalPrice}€</p>
       </div>
 
-      <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Name</label>
+      <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+        <div className="form-group">
+          <label className="form-label">Name</label>
           <input
             type="text"
             {...register('name', { required: 'Name ist erforderlich' })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="form-input"
           />
-          {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+          {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">E-Mail</label>
+        <div className="form-group">
+          <label className="form-label">E-Mail</label>
           <input
             type="email"
             {...register('email', { 
@@ -97,23 +98,23 @@ export default function BookingForm({ startTime, endTime, onCancel, onBookingCom
                 message: 'Ungültige E-Mail-Adresse'
               }
             })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="form-input"
           />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Handynummer</label>
+        <div className="form-group">
+          <label className="form-label">Handynummer</label>
           <input
             type="tel"
             {...register('phone', { required: 'Telefonnummer ist erforderlich' })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="form-input"
           />
-          {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
+          {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
         </div>
 
         {isValid && (
-          <div className="mt-6">
+          <div className="mt-8">
             <p className="text-sm text-gray-600 mb-4">Bitte fahren Sie mit der PayPal-Zahlung fort:</p>
             <PayPalScriptProvider options={{ 
               clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '',
@@ -124,7 +125,8 @@ export default function BookingForm({ startTime, endTime, onCancel, onBookingCom
             }}>
               {paypalLoading && (
                 <div className="text-center py-4">
-                  <p>PayPal wird geladen...</p>
+                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
+                  <p className="mt-2 text-gray-600">PayPal wird geladen...</p>
                 </div>
               )}
               <PayPalButtons
@@ -188,11 +190,11 @@ export default function BookingForm({ startTime, endTime, onCancel, onBookingCom
           </div>
         )}
 
-        <div className="flex justify-end space-x-4 mt-6">
+        <div className="flex justify-end gap-4 mt-8">
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="btn btn-outline"
           >
             Abbrechen
           </button>
