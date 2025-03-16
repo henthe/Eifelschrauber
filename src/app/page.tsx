@@ -128,7 +128,7 @@ export default function Home() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <section className="mb-8 text-center">
         <h2 className="text-2xl font-bold mb-4">Hebebühne Vermietung</h2>
-        <p className="text-lg mb-2">Preis: 50€ pro Stunde</p>
+        <p className="text-lg mb-2">Preis: 18€ pro Stunde</p>
         <p className="text-gray-600 mb-4">Verfügbar von 08:00 bis 20:00 Uhr</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
