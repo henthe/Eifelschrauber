@@ -361,7 +361,7 @@ export default function AdminPage() {
 
         {showBookingForm && selectedTimeSlot && (
           <div className="modal-overlay">
-            <div className="modal-content">
+            <div className="modal-content max-w-lg mx-4">
               <h2 className="card-title mb-4">Zeitslot buchen</h2>
               <p className="text-gray-600 mb-6">
                 Zeit: {selectedTimeSlot.start.toLocaleString()} - {selectedTimeSlot.end.toLocaleString()}
