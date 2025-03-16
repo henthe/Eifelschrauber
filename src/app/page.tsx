@@ -198,8 +198,8 @@ export default function Home() {
             }}
             buttonText={{
               today: 'Heute',
-              week: 'Woche',
-              day: 'Tag'
+              week: 'Wochen',
+              day: 'Tage'
             }}
             locale="de"
             stickyHeaderDates={true}

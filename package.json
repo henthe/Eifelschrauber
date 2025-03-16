@@ -16,6 +16,7 @@
     "@fullcalendar/timegrid": "^6.1.11",
     "@paypal/react-paypal-js": "^8.1.4",
     "@prisma/client": "^5.10.2",
+    "@vercel/postgres": "^0.10.0",
     "airtable": "^0.12.2",
     "buehne2": "file:",
     "next": "14.1.3",
