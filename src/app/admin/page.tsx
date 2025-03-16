@@ -327,6 +327,15 @@ export default function AdminPage() {
             }}
             select={handleDateSelect}
             eventClick={handleEventClick}
+            dateClick={(info) => {
+              const clickedDate = new Date(info.date);
+              const endDate = new Date(clickedDate);
+              endDate.setHours(clickedDate.getHours() + 1);
+              handleDateSelect({
+                start: clickedDate,
+                end: endDate
+              });
+            }}
             events={bookings.map(booking => ({
               title: booking.name === 'ADMIN-BLOCK' ? 'BLOCKIERT' : `${booking.name} - ${booking.phone}`,
               start: booking.startTime,
