@@ -120,10 +120,16 @@ export default function AdminPage() {
   }
 
   const handleEventClick = (clickInfo: any) => {
-    const booking = bookings.find(b => 
-      b.startTime === clickInfo.event.startStr && 
-      b.endTime === clickInfo.event.endStr
-    )
+    const eventStart = new Date(clickInfo.event.start).getTime()
+    const eventEnd = new Date(clickInfo.event.end).getTime()
+    
+    const booking = bookings.find(b => {
+      const bookingStart = new Date(b.startTime).getTime()
+      const bookingEnd = new Date(b.endTime).getTime()
+      // Toleranz von 1 Sekunde für Zeitvergleiche
+      return Math.abs(bookingStart - eventStart) < 1000 && Math.abs(bookingEnd - eventEnd) < 1000
+    })
+    
     if (booking) {
       setSelectedBooking(booking)
       setShowDeleteConfirm(true)
