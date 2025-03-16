@@ -40,11 +40,12 @@ export default function AdminPage() {
       })
 
       const data = await response.json()
+      console.log('Login Response:', data)
 
       if (data.success) {
         setIsAuthenticated(true)
       } else {
-        alert('Falsches Passwort')
+        alert(`Falsches Passwort. ${data.debug || ''}`)
       }
     } catch (error) {
       console.error('Login-Fehler:', error)
