@@ -248,35 +248,32 @@ export default function AdminPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="card max-w-md w-full space-y-8">
           <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            <h2 className="text-center text-3xl font-bold text-gray-900">
               Admin Login
             </h2>
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleLogin}>
             <input type="hidden" name="remember" value="true" />
-            <div className="rounded-md shadow-sm -space-y-px">
-              <div>
-                <label htmlFor="password" className="sr-only">Passwort</label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                  placeholder="Admin Passwort"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
+            <div>
+              <label htmlFor="password" className="sr-only">Passwort</label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+                className="form-input"
+                placeholder="Admin Passwort"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
-
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="btn btn-primary w-full"
               >
                 Login
               </button>
@@ -288,238 +285,232 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-        <div className="flex gap-4">
-          <button
-            onClick={handleManualTimeSlot}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            Zeitslot manuell wählen
-          </button>
-          <button
-            onClick={() => setIsAuthenticated(false)}
-            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
-          >
-            Logout
-          </button>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-50 py-8 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="card-header mb-8">
+          <h1 className="card-title">Admin Dashboard</h1>
+          <div className="flex gap-4">
+            <button
+              onClick={handleManualTimeSlot}
+              className="btn btn-primary"
+            >
+              Zeitslot manuell wählen
+            </button>
+            <button
+              onClick={() => setIsAuthenticated(false)}
+              className="btn btn-outline"
+            >
+              Logout
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className="calendar-container relative z-0">
-        <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView="timeGridWeek"
-          selectable={true}
-          selectMirror={true}
-          dayMaxEvents={true}
-          weekends={true}
-          hiddenDays={[0]}
-          slotMinTime="06:00:00"
-          slotMaxTime="22:00:00"
-          allDaySlot={false}
-          slotDuration="01:00:00"
-          snapDuration="01:00:00"
-          height="auto"
-          selectConstraint={{
-            startTime: '06:00:00',
-            endTime: '22:00:00',
-            dows: [1, 2, 3, 4, 5, 6]
-          }}
-          select={handleDateSelect}
-          eventClick={handleEventClick}
-          events={bookings.map(booking => ({
-            title: booking.name === 'ADMIN-BLOCK' ? 'BLOCKIERT' : `${booking.name} - ${booking.phone}`,
-            start: booking.startTime,
-            end: booking.endTime,
-            backgroundColor: booking.name === 'ADMIN-BLOCK' ? '#4B5563' : '#ef4444',
-            borderColor: booking.name === 'ADMIN-BLOCK' ? '#374151' : '#dc2626',
-            display: 'block',
-            overlap: false
-          }))}
-          headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'timeGridWeek,timeGridDay'
-          }}
-          buttonText={{
-            today: 'Heute',
-            week: 'Woche',
-            day: 'Tag'
-          }}
-          locale="de"
-        />
-      </div>
+        <div className="calendar-container">
+          <FullCalendar
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            initialView="timeGridWeek"
+            selectable={true}
+            selectMirror={true}
+            dayMaxEvents={true}
+            weekends={true}
+            hiddenDays={[0]}
+            slotMinTime="06:00:00"
+            slotMaxTime="22:00:00"
+            allDaySlot={false}
+            slotDuration="01:00:00"
+            snapDuration="01:00:00"
+            height="auto"
+            selectConstraint={{
+              startTime: '06:00:00',
+              endTime: '22:00:00',
+              dows: [1, 2, 3, 4, 5, 6]
+            }}
+            select={handleDateSelect}
+            eventClick={handleEventClick}
+            events={bookings.map(booking => ({
+              title: booking.name === 'ADMIN-BLOCK' ? 'BLOCKIERT' : `${booking.name} - ${booking.phone}`,
+              start: booking.startTime,
+              end: booking.endTime,
+              backgroundColor: booking.name === 'ADMIN-BLOCK' ? '#4B5563' : '#ef4444',
+              borderColor: booking.name === 'ADMIN-BLOCK' ? '#374151' : '#dc2626',
+              display: 'block',
+              overlap: false
+            }))}
+            headerToolbar={{
+              left: 'prev,next today',
+              center: 'title',
+              right: 'timeGridWeek,timeGridDay'
+            }}
+            buttonText={{
+              today: 'Heute',
+              week: 'Woche',
+              day: 'Tag'
+            }}
+            locale="de"
+          />
+        </div>
 
-      {showBookingForm && selectedTimeSlot && (
-        <div className="modal-overlay">
-          <div className="modal-content p-6">
-            <h2 className="text-xl font-bold mb-4">Zeitslot buchen</h2>
-            <p className="mb-4">
-              Zeit: {selectedTimeSlot.start.toLocaleString()} - {selectedTimeSlot.end.toLocaleString()}
-            </p>
-            <form onSubmit={handleFormSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Name</label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
+        {showBookingForm && selectedTimeSlot && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h2 className="card-title mb-4">Zeitslot buchen</h2>
+              <p className="text-gray-600 mb-6">
+                Zeit: {selectedTimeSlot.start.toLocaleString()} - {selectedTimeSlot.end.toLocaleString()}
+              </p>
+              <form onSubmit={handleFormSubmit} className="space-y-6">
+                <div className="form-group">
+                  <label className="form-label">Name</label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="form-input"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">E-Mail</label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="form-input"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Telefon</label>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="form-input"
+                  />
+                </div>
+                <div className="flex gap-4 mt-8">
+                  <button
+                    type="submit"
+                    className="btn btn-primary flex-1"
+                  >
+                    Mit Daten speichern
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleQuickBlock}
+                    className="btn btn-secondary flex-1"
+                  >
+                    Ohne Daten blockieren
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowBookingForm(false)
+                      setSelectedTimeSlot(null)
+                    }}
+                    className="btn btn-outline"
+                  >
+                    Abbrechen
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {showTimeSlotModal && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h2 className="card-title mb-4">Zeitslot manuell wählen</h2>
+              <div className="space-y-6">
+                <div className="form-group">
+                  <label className="form-label">Datum</label>
+                  <input
+                    type="date"
+                    value={manualDate}
+                    onChange={(e) => setManualDate(e.target.value)}
+                    className="form-input"
+                    min={new Date().toISOString().split('T')[0]}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Startzeit</label>
+                  <input
+                    type="time"
+                    value={manualStartTime}
+                    onChange={(e) => setManualStartTime(e.target.value)}
+                    className="form-input"
+                    min="06:00"
+                    max="21:00"
+                    step="3600"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Endzeit</label>
+                  <input
+                    type="time"
+                    value={manualEndTime}
+                    onChange={(e) => setManualEndTime(e.target.value)}
+                    className="form-input"
+                    min="07:00"
+                    max="22:00"
+                    step="3600"
+                  />
+                </div>
+                <div className="flex gap-4 mt-8">
+                  <button
+                    onClick={handleManualSubmit}
+                    className="btn btn-primary flex-1"
+                  >
+                    Weiter
+                  </button>
+                  <button
+                    onClick={() => setShowTimeSlotModal(false)}
+                    className="btn btn-outline"
+                  >
+                    Abbrechen
+                  </button>
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">E-Mail</label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Telefon</label>
-                <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                />
-              </div>
-              <div className="flex gap-4 mt-6">
+            </div>
+          </div>
+        )}
+
+        {showDeleteConfirm && selectedBooking && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="card-title">Buchung löschen</h3>
                 <button
-                  type="submit"
-                  className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="text-gray-400 hover:text-gray-500 transition-colors"
                 >
-                  Mit Daten speichern
+                  <span className="sr-only">Schließen</span>
+                  ✕
                 </button>
+              </div>
+              <div className="space-y-3 mb-6">
+                <p><strong className="font-medium">Name:</strong> {selectedBooking.name}</p>
+                <p><strong className="font-medium">Telefon:</strong> {selectedBooking.phone}</p>
+                <p><strong className="font-medium">E-Mail:</strong> {selectedBooking.email}</p>
+                <p><strong className="font-medium">Von:</strong> {new Date(selectedBooking.startTime).toLocaleString('de-DE')}</p>
+                <p><strong className="font-medium">Bis:</strong> {new Date(selectedBooking.endTime).toLocaleString('de-DE')}</p>
+              </div>
+              <div className="flex justify-end gap-4">
                 <button
-                  type="button"
-                  onClick={handleQuickBlock}
-                  className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                >
-                  Ohne Daten blockieren
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowBookingForm(false)
-                    setSelectedTimeSlot(null)
-                  }}
-                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="btn btn-outline"
                 >
                   Abbrechen
                 </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {showTimeSlotModal && (
-        <div className="modal-overlay">
-          <div className="modal-content p-6">
-            <h2 className="text-xl font-bold mb-4">Zeitslot manuell wählen</h2>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Datum
-                </label>
-                <input
-                  type="date"
-                  value={manualDate}
-                  onChange={(e) => setManualDate(e.target.value)}
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  min={new Date().toISOString().split('T')[0]}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Startzeit
-                </label>
-                <input
-                  type="time"
-                  value={manualStartTime}
-                  onChange={(e) => setManualStartTime(e.target.value)}
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  min="06:00"
-                  max="21:00"
-                  step="3600"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Endzeit
-                </label>
-                <input
-                  type="time"
-                  value={manualEndTime}
-                  onChange={(e) => setManualEndTime(e.target.value)}
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  min="07:00"
-                  max="22:00"
-                  step="3600"
-                />
-              </div>
-              <div className="flex gap-4 mt-6">
                 <button
-                  onClick={handleManualSubmit}
-                  className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                  onClick={handleDeleteBooking}
+                  className="btn btn-danger"
                 >
-                  Weiter
-                </button>
-                <button
-                  onClick={() => setShowTimeSlotModal(false)}
-                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
-                >
-                  Abbrechen
+                  Löschen
                 </button>
               </div>
             </div>
           </div>
-        </div>
-      )}
-
-      {showDeleteConfirm && selectedBooking && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style={{ zIndex: 100000 }}>
-          <div 
-            className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl" 
-            style={{ position: 'relative', zIndex: 100001 }}
-          >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold">Buchung löschen</h3>
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="text-gray-400 hover:text-gray-500"
-              >
-                ✕
-              </button>
-            </div>
-            <div className="mb-4">
-              <p><strong>Name:</strong> {selectedBooking.name}</p>
-              <p><strong>Telefon:</strong> {selectedBooking.phone}</p>
-              <p><strong>E-Mail:</strong> {selectedBooking.email}</p>
-              <p><strong>Von:</strong> {new Date(selectedBooking.startTime).toLocaleString('de-DE')}</p>
-              <p><strong>Bis:</strong> {new Date(selectedBooking.endTime).toLocaleString('de-DE')}</p>
-            </div>
-            <div className="flex justify-end space-x-3">
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
-              >
-                Abbrechen
-              </button>
-              <button
-                onClick={handleDeleteBooking}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-              >
-                Löschen
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 } 
