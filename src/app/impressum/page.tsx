@@ -8,8 +8,18 @@ export default function Impressum() {
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-4">Angaben gemäß § 5 TMG</h2>
         <p>EIFELSCHRAUBER GmbH</p>
-        <p>Tuchwiese 3</p>
-        <p>54570 Wallenborn</p>
+        <p>
+          <a 
+            href="https://maps.app.goo.gl/qjGD7G5Udd5nTYf86" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline"
+          >
+            Tuchwiese 7a
+            <br />
+            54570 Wallenborn
+          </a>
+        </p>
       </section>
 
       <section className="mb-8">
