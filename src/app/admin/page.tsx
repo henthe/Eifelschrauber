@@ -361,7 +361,7 @@ export default function AdminPage() {
 
         {showBookingForm && selectedTimeSlot && (
           <div className="modal-overlay">
-            <div className="modal-content max-w-lg mx-4">
+            <div className="modal-content sm:max-w-lg w-[calc(100%-2rem)] mx-auto">
               <h2 className="card-title mb-4">Zeitslot buchen</h2>
               <p className="text-gray-600 mb-6">
                 Zeit: {selectedTimeSlot.start.toLocaleString()} - {selectedTimeSlot.end.toLocaleString()}
@@ -426,7 +426,7 @@ export default function AdminPage() {
 
         {showTimeSlotModal && (
           <div className="modal-overlay">
-            <div className="modal-content">
+            <div className="modal-content sm:max-w-lg w-[calc(100%-2rem)] mx-auto">
               <h2 className="card-title mb-4">Zeitslot manuell wählen</h2>
               <div className="space-y-6">
                 <div className="form-group">
@@ -484,7 +484,7 @@ export default function AdminPage() {
 
         {showDeleteConfirm && selectedBooking && (
           <div className="modal-overlay">
-            <div className="modal-content">
+            <div className="modal-content sm:max-w-lg w-[calc(100%-2rem)] mx-auto">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="card-title">Buchung löschen</h3>
                 <button

@@ -207,7 +207,7 @@ export default function Home() {
             stickyHeaderDates={true}
             expandRows={true}
             contentHeight="auto"
-            handleWindowResize={true}
+            handleWindowResize={false}
             eventDisplay="block"
             slotLabelFormat={{
               hour: '2-digit',
