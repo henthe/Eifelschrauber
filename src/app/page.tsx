@@ -158,7 +158,8 @@ export default function Home() {
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
-            weekends={false}
+            weekends={true}
+            hiddenDays={[0]}
             slotMinTime="06:00:00"
             slotMaxTime="22:00:00"
             allDaySlot={false}
