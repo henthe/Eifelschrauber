@@ -256,29 +256,31 @@ export default function AdminPage() {
       </div>
 
       {showDeleteConfirm && selectedBooking && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold mb-4">Buchung löschen</h3>
-            <div className="mb-4">
-              <p><strong>Name:</strong> {selectedBooking.name}</p>
-              <p><strong>Telefon:</strong> {selectedBooking.phone}</p>
-              <p><strong>E-Mail:</strong> {selectedBooking.email}</p>
-              <p><strong>Von:</strong> {new Date(selectedBooking.startTime).toLocaleString('de-DE')}</p>
-              <p><strong>Bis:</strong> {new Date(selectedBooking.endTime).toLocaleString('de-DE')}</p>
-            </div>
-            <div className="flex justify-end space-x-3">
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
-              >
-                Abbrechen
-              </button>
-              <button
-                onClick={handleDeleteBooking}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-              >
-                Löschen
-              </button>
+        <div className="admin-delete-dialog">
+          <div className="admin-delete-dialog-overlay">
+            <div className="admin-delete-dialog-content p-6">
+              <h3 className="text-lg font-bold mb-4">Buchung löschen</h3>
+              <div className="mb-4">
+                <p><strong>Name:</strong> {selectedBooking.name}</p>
+                <p><strong>Telefon:</strong> {selectedBooking.phone}</p>
+                <p><strong>E-Mail:</strong> {selectedBooking.email}</p>
+                <p><strong>Von:</strong> {new Date(selectedBooking.startTime).toLocaleString('de-DE')}</p>
+                <p><strong>Bis:</strong> {new Date(selectedBooking.endTime).toLocaleString('de-DE')}</p>
+              </div>
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
+                >
+                  Abbrechen
+                </button>
+                <button
+                  onClick={handleDeleteBooking}
+                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                >
+                  Löschen
+                </button>
+              </div>
             </div>
           </div>
         </div>
