@@ -28,13 +28,27 @@ export default function AdminPage() {
     }
   }, [isAuthenticated])
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Einfaches Passwort für den Anfang - sollte später sicherer gemacht werden
-    if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
-      setIsAuthenticated(true)
-    } else {
-      alert('Falsches Passwort')
+    try {
+      const response = await fetch('/api/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password }),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setIsAuthenticated(true)
+      } else {
+        alert('Falsches Passwort')
+      }
+    } catch (error) {
+      console.error('Login-Fehler:', error)
+      alert('Ein Fehler ist aufgetreten')
     }
   }
 
