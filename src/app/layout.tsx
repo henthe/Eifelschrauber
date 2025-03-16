@@ -22,12 +22,12 @@ export default function RootLayout({
             <h1 className="text-4xl font-bold text-center">EIFELSCHRAUBER</h1>
             <p className="text-center mt-2">Professionelle Hebebühne zur Miete</p>
             <a 
-              href="https://maps.app.goo.gl/PyA77farZ41d8k88A"
+              href="https://maps.app.goo.gl/qjGD7G5Udd5nTYf86"
               target="_blank"
               rel="noopener noreferrer"
               className="text-center mt-2 block text-blue-300 hover:text-blue-200 transition-colors"
             >
-              Tuchwiese 3, 54570 Wallenborn
+              Tuchwiese 7a, 54570 Wallenborn
             </a>
           </div>
         </header>

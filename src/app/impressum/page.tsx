@@ -9,8 +9,7 @@ export default function Impressum() {
         <h2 className="text-xl font-semibold mb-4">Angaben gemäß § 5 TMG</h2>
         <p>EIFELSCHRAUBER GmbH</p>
         <p>
-          <a 
-            href="https://maps.app.goo.gl/qjGD7G5Udd5nTYf86" 
+          <a  
             target="_blank" 
             rel="noopener noreferrer"
             className="text-blue-600 hover:underline"
