@@ -102,4 +102,16 @@ export async function checkOverlap(startTime: string, endTime: string) {
     console.error('Fehler beim Prüfen der Überschneidungen:', error);
     throw error;
   }
+}
+
+export async function deleteBooking(id: string) {
+  try {
+    const response = await fetchFromAirtable(`/${id}`, {
+      method: 'DELETE',
+    });
+    return response;
+  } catch (error) {
+    console.error('Fehler beim Löschen der Buchung:', error);
+    throw error;
+  }
 } 
