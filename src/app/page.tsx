@@ -192,7 +192,7 @@ export default function Home() {
               overlap: false
             }))}
             headerToolbar={{
-              left: 'prev,next heute',
+              left: 'prev,next today',
               center: 'title',
               right: 'timeGridWeek,timeGridDay'
             }}

@@ -103,7 +103,7 @@ export default function BookingForm({ startTime, endTime, onCancel, onBookingCom
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Telefon</label>
+          <label className="block text-sm font-medium text-gray-700">Handynummer</label>
           <input
             type="tel"
             {...register('phone', { required: 'Telefonnummer ist erforderlich' })}
