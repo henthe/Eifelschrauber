@@ -21,6 +21,17 @@ export default function AdminPage() {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [showBookingForm, setShowBookingForm] = useState(false)
+  const [showTimeSlotModal, setShowTimeSlotModal] = useState(false)
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: ''
+  })
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<{
+    start: Date;
+    end: Date;
+  } | null>(null)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -64,33 +75,20 @@ export default function AdminPage() {
   }
 
   const handleDateSelect = async (selectInfo: any) => {
-    const startTime = new Date(selectInfo.start)
-    const endTime = new Date(selectInfo.end)
-    
-    if (startTime.getHours() < 6 || endTime.getHours() > 22) {
-      alert('Buchungen sind nur zwischen 06:00 und 22:00 Uhr möglich.')
-      return
-    }
-
-    if (startTime.getDay() === 0 || endTime.getDay() === 0) {
-      alert('Buchungen sind nur von Montag bis Samstag möglich.')
-      return
-    }
-
-    const isOverlapping = bookings.some(booking => {
-      const bookingStart = new Date(booking.startTime)
-      const bookingEnd = new Date(booking.endTime)
-      return (
-        (startTime >= bookingStart && startTime < bookingEnd) ||
-        (endTime > bookingStart && endTime <= bookingEnd) ||
-        (startTime <= bookingStart && endTime >= bookingEnd)
-      )
+    setSelectedTimeSlot({
+      start: selectInfo.start,
+      end: selectInfo.end
     })
+    setShowBookingForm(true)
+  }
 
-    if (isOverlapping) {
-      alert('Dieser Zeitraum ist bereits gebucht.')
-      return
-    }
+  const handleManualTimeSlot = () => {
+    setShowTimeSlotModal(true)
+  }
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selectedTimeSlot) return
 
     try {
       const response = await fetch('/api/bookings', {
@@ -99,8 +97,41 @@ export default function AdminPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          startTime: startTime.toISOString(),
-          endTime: endTime.toISOString(),
+          startTime: selectedTimeSlot.start.toISOString(),
+          endTime: selectedTimeSlot.end.toISOString(),
+          name: formData.name || 'ADMIN-BLOCK',
+          email: formData.email || 'admin@example.com',
+          phone: formData.phone || '0000',
+          price: 0
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Fehler beim Speichern der Buchung')
+      }
+
+      setShowBookingForm(false)
+      setFormData({ name: '', email: '', phone: '' })
+      setSelectedTimeSlot(null)
+      fetchBookings()
+    } catch (error) {
+      console.error('Fehler:', error)
+      alert('Fehler beim Speichern der Buchung')
+    }
+  }
+
+  const handleQuickBlock = async () => {
+    if (!selectedTimeSlot) return
+
+    try {
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          startTime: selectedTimeSlot.start.toISOString(),
+          endTime: selectedTimeSlot.end.toISOString(),
           name: 'ADMIN-BLOCK',
           email: 'admin@example.com',
           phone: '0000',
@@ -112,6 +143,8 @@ export default function AdminPage() {
         throw new Error('Fehler beim Speichern der Buchung')
       }
 
+      setShowBookingForm(false)
+      setSelectedTimeSlot(null)
       fetchBookings()
     } catch (error) {
       console.error('Fehler:', error)
@@ -202,12 +235,20 @@ export default function AdminPage() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-        <button
-          onClick={() => setIsAuthenticated(false)}
-          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
-        >
-          Logout
-        </button>
+        <div className="flex gap-4">
+          <button
+            onClick={handleManualTimeSlot}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            Zeitslot manuell wählen
+          </button>
+          <button
+            onClick={() => setIsAuthenticated(false)}
+            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
       <div className="calendar-container relative z-0">
@@ -254,6 +295,88 @@ export default function AdminPage() {
           locale="de"
         />
       </div>
+
+      {showBookingForm && selectedTimeSlot && (
+        <div className="modal-overlay">
+          <div className="modal-content p-6">
+            <h2 className="text-xl font-bold mb-4">Zeitslot buchen</h2>
+            <p className="mb-4">
+              Zeit: {selectedTimeSlot.start.toLocaleString()} - {selectedTimeSlot.end.toLocaleString()}
+            </p>
+            <form onSubmit={handleFormSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Name</label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">E-Mail</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Telefon</label>
+                <input
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div className="flex gap-4 mt-6">
+                <button
+                  type="submit"
+                  className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                >
+                  Mit Daten speichern
+                </button>
+                <button
+                  type="button"
+                  onClick={handleQuickBlock}
+                  className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
+                >
+                  Ohne Daten blockieren
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowBookingForm(false)
+                    setSelectedTimeSlot(null)
+                  }}
+                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+                >
+                  Abbrechen
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showTimeSlotModal && (
+        <div className="modal-overlay">
+          <div className="modal-content p-6">
+            <h2 className="text-xl font-bold mb-4">Zeitslot manuell wählen</h2>
+            <p className="text-gray-600 mb-4">
+              Diese Funktion wird noch implementiert.
+            </p>
+            <button
+              onClick={() => setShowTimeSlotModal(false)}
+              className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            >
+              Schließen
+            </button>
+          </div>
+        </div>
+      )}
 
       {showDeleteConfirm && selectedBooking && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style={{ zIndex: 100000 }}>
