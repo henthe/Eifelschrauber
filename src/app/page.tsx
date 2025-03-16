@@ -62,15 +62,15 @@ export default function Home() {
     const startTime = new Date(selectInfo.start)
     const endTime = new Date(selectInfo.end)
     
-    // Nur Buchungen zwischen 8:00 und 19:00 erlauben
-    if (startTime.getHours() < 8 || endTime.getHours() > 20) {
-      alert('Buchungen sind nur zwischen 8:00 und 19:00 Uhr möglich.')
+    // Nur Buchungen zwischen 6:00 und 22:00 erlauben
+    if (startTime.getHours() < 6 || endTime.getHours() > 22) {
+      alert('Buchungen sind nur zwischen 06:00 und 22:00 Uhr möglich.')
       return
     }
 
-    // Überprüfen, ob die ausgewählte Zeit in der Vergangenheit liegt
-    if (startTime < new Date()) {
-      alert('Buchungen in der Vergangenheit sind nicht möglich.')
+    // Überprüfen ob es ein Sonntag ist
+    if (startTime.getDay() === 0 || endTime.getDay() === 0) {
+      alert('Buchungen sind nur von Montag bis Samstag möglich.')
       return
     }
 
@@ -129,7 +129,7 @@ export default function Home() {
       <section className="mb-8 text-center">
         <h2 className="text-2xl font-bold mb-4">Hebebühne Vermietung</h2>
         <p className="text-lg mb-2">Preis: 18€ pro Stunde</p>
-        <p className="text-gray-600 mb-4">Verfügbar von 08:00 bis 20:00 Uhr</p>
+        <p className="text-gray-600 mb-4">Verfügbar von 06:00 bis 22:00 Uhr (Montag bis Samstag)</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
             onClick={() => setShowCustomTimeModal(true)}
@@ -158,17 +158,17 @@ export default function Home() {
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
-            weekends={true}
-            slotMinTime="08:00:00"
-            slotMaxTime="20:00:00"
+            weekends={false}
+            slotMinTime="06:00:00"
+            slotMaxTime="22:00:00"
             allDaySlot={false}
             slotDuration="01:00:00"
             snapDuration="01:00:00"
             height="auto"
             selectConstraint={{
-              startTime: '08:00:00',
-              endTime: '20:00:00',
-              dows: [0, 1, 2, 3, 4, 5, 6]
+              startTime: '06:00:00',
+              endTime: '22:00:00',
+              dows: [1, 2, 3, 4, 5, 6]
             }}
             selectOverlap={false}
             select={handleDateSelect}
@@ -212,9 +212,9 @@ export default function Home() {
             selectMinDistance={5}
             unselectAuto={false}
             businessHours={{
-              startTime: '08:00',
-              endTime: '20:00',
-              daysOfWeek: [0, 1, 2, 3, 4, 5, 6]
+              startTime: '06:00',
+              endTime: '22:00',
+              daysOfWeek: [1, 2, 3, 4, 5, 6]
             }}
             editable={false}
             droppable={false}

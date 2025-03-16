@@ -20,8 +20,13 @@ export default function CustomTimeSlotModal({ onClose, onSelect }: CustomTimeSlo
       return;
     }
 
-    if (start.getHours() < 8 || end.getHours() > 19) {
-      alert('Buchungen sind nur zwischen 8:00 und 19:00 Uhr möglich.');
+    if (start.getHours() < 6 || end.getHours() > 22) {
+      alert('Buchungen sind nur zwischen 06:00 und 22:00 Uhr möglich.');
+      return;
+    }
+
+    if (start.getDay() === 0 || end.getDay() === 0) {
+      alert('Buchungen sind nur von Montag bis Samstag möglich.');
       return;
     }
 
@@ -59,7 +64,7 @@ export default function CustomTimeSlotModal({ onClose, onSelect }: CustomTimeSlo
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 required
               >
-                {Array.from({ length: 12 }, (_, i) => i + 8).map((hour) => (
+                {Array.from({ length: 16 }, (_, i) => i + 6).map((hour) => (
                   <option key={hour} value={`${hour.toString().padStart(2, '0')}:00`}>
                     {hour}:00
                   </option>
@@ -77,7 +82,7 @@ export default function CustomTimeSlotModal({ onClose, onSelect }: CustomTimeSlo
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 required
               >
-                {Array.from({ length: 12 }, (_, i) => i + 9).map((hour) => (
+                {Array.from({ length: 16 }, (_, i) => i + 7).map((hour) => (
                   <option key={hour} value={`${hour.toString().padStart(2, '0')}:00`}>
                     {hour}:00
                   </option>
