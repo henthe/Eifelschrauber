@@ -32,6 +32,9 @@ export default function AdminPage() {
     start: Date;
     end: Date;
   } | null>(null)
+  const [manualDate, setManualDate] = useState('')
+  const [manualStartTime, setManualStartTime] = useState('')
+  const [manualEndTime, setManualEndTime] = useState('')
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -84,6 +87,59 @@ export default function AdminPage() {
 
   const handleManualTimeSlot = () => {
     setShowTimeSlotModal(true)
+    // Standardwerte setzen
+    const now = new Date()
+    setManualDate(now.toISOString().split('T')[0])
+    setManualStartTime('09:00')
+    setManualEndTime('10:00')
+  }
+
+  const handleManualSubmit = () => {
+    if (!manualDate || !manualStartTime || !manualEndTime) {
+      alert('Bitte füllen Sie alle Felder aus.')
+      return
+    }
+
+    const startDateTime = new Date(`${manualDate}T${manualStartTime}:00`)
+    const endDateTime = new Date(`${manualDate}T${manualEndTime}:00`)
+
+    // Validierungen
+    if (startDateTime >= endDateTime) {
+      alert('Die Startzeit muss vor der Endzeit liegen.')
+      return
+    }
+
+    if (startDateTime.getHours() < 6 || endDateTime.getHours() > 22) {
+      alert('Buchungen sind nur zwischen 06:00 und 22:00 Uhr möglich.')
+      return
+    }
+
+    if (startDateTime.getDay() === 0 || endDateTime.getDay() === 0) {
+      alert('Buchungen sind nur von Montag bis Samstag möglich.')
+      return
+    }
+
+    const isOverlapping = bookings.some(booking => {
+      const bookingStart = new Date(booking.startTime)
+      const bookingEnd = new Date(booking.endTime)
+      return (
+        (startDateTime >= bookingStart && startDateTime < bookingEnd) ||
+        (endDateTime > bookingStart && endDateTime <= bookingEnd) ||
+        (startDateTime <= bookingStart && endDateTime >= bookingEnd)
+      )
+    })
+
+    if (isOverlapping) {
+      alert('Dieser Zeitraum ist bereits gebucht.')
+      return
+    }
+
+    setSelectedTimeSlot({
+      start: startDateTime,
+      end: endDateTime
+    })
+    setShowTimeSlotModal(false)
+    setShowBookingForm(true)
   }
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -365,15 +421,62 @@ export default function AdminPage() {
         <div className="modal-overlay">
           <div className="modal-content p-6">
             <h2 className="text-xl font-bold mb-4">Zeitslot manuell wählen</h2>
-            <p className="text-gray-600 mb-4">
-              Diese Funktion wird noch implementiert.
-            </p>
-            <button
-              onClick={() => setShowTimeSlotModal(false)}
-              className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-            >
-              Schließen
-            </button>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Datum
+                </label>
+                <input
+                  type="date"
+                  value={manualDate}
+                  onChange={(e) => setManualDate(e.target.value)}
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  min={new Date().toISOString().split('T')[0]}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Startzeit
+                </label>
+                <input
+                  type="time"
+                  value={manualStartTime}
+                  onChange={(e) => setManualStartTime(e.target.value)}
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  min="06:00"
+                  max="21:00"
+                  step="3600"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Endzeit
+                </label>
+                <input
+                  type="time"
+                  value={manualEndTime}
+                  onChange={(e) => setManualEndTime(e.target.value)}
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  min="07:00"
+                  max="22:00"
+                  step="3600"
+                />
+              </div>
+              <div className="flex gap-4 mt-6">
+                <button
+                  onClick={handleManualSubmit}
+                  className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                >
+                  Weiter
+                </button>
+                <button
+                  onClick={() => setShowTimeSlotModal(false)}
+                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
+                >
+                  Abbrechen
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
