@@ -192,9 +192,14 @@ export default function Home() {
               overlap: false
             }))}
             headerToolbar={{
-              left: 'prev,next today',
+              left: 'prev,next heute',
               center: 'title',
               right: 'timeGridWeek,timeGridDay'
+            }}
+            buttonText={{
+              today: 'Heute',
+              week: 'Woche',
+              day: 'Tag'
             }}
             locale="de"
             stickyHeaderDates={true}
